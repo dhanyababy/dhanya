@@ -30,7 +30,7 @@
                     $count = 1;
                     foreach($patients as $key=>$value){
             ?>
-                        Patient <?=$count?> : <a href="patient_details.php?id=<?= $value['userID']?>"><?=$value['username']?></a>
+                        Patient <?=$count?> : <a class="view_patient" data-id="<?= $value['userID']?>" href="#"><?=$value['username']?></a>
                         <br>
             <?php
                     $count++;
@@ -43,3 +43,13 @@
     </div>
 </div>
 <?php require_once('footer.php'); ?>
+<script>
+    $(document).on('click','.view_patient',function(e){
+        e.preventDefault();
+        var form = $('<form action="patient_details.php" method="post">' +
+        '<input type="hidden" name="id" value="'+$(this).attr('data-id')+'" />' +
+        '</form>');
+        $('body').append(form);
+        form.submit();
+    })
+</script>

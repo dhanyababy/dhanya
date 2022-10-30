@@ -1,89 +1,32 @@
 <?php
-session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 0);
-error_reporting(E_ALL);
-
-require_once "init.php";
-require('../database.php');
-
-$patients = [];
-$sql = "SELECT * FROM user where Role_IDrole=1";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $patients[] = $row;
+    $code = '';
+    if(isset($_GET['code']) && !empty($_GET['code'])){
+        $code = $_GET['code'];
     }
-}
-$conn->close();
-if (!isset($_SESSION['user']) && isset($_GET['code'])) {
-    $data = fetchData();
-}
-
-
-// if (!isset($_SESSION['user'])) {
-//     header("location: logout.php");
-// }
-
 ?>
-<?php
- require_once('header.php'); 
-?>
-<div class="col-md-9 main_div">
-    <div class="sub_div">
-        <div class="panel panel-default plr10 ptb10">
-            <h5 class="card-title">Welcome physician <?php echo ucfirst($_SESSION['user_name']);?></h5>
-            <p class="card-text">Your email is <?php echo $_SESSION['user_email']; ?> </p>
-            <p>Click on your patient(s) name below to view their files and  activity information:</p>
-            
-            
-            
-            <?php
-                if(!empty($patients)){
-                    $count = 1;
-                    foreach($patients as $key=>$value){
-            ?>
-                        Patient <?=$count?> : <a class="view_patient" data-id="<?= $value['userID']?>" href="#"><?=$value['username']?></a>
-                        <br>
-            <?php
-                    $count++;
-                    }
-                }
-            ?>
-        </div>
-    <div class="panel panel-default plr10 ptb10">
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Patient
-            <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-            <?php
-                if(!empty($patients)){
-                            $count = 1;
-                    foreach($patients as $key=>$value){
-                    ?>
-                        <li><a class="view_patient" data-id="<?= $value['userID']?>" href="#"><?=$value['username']?></a></li>
-                    <?php
-                    }
-                }
-            ?>
-            
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkinsons</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
 
-            </ul>
-        </div>
-    </div>
-        
-       
-    </div>
-</div>
-
-<?php require_once('footer.php'); ?>
 <script>
-    $(document).on('click','.view_patient',function(e){
-        e.preventDefault();
-        var form = $('<form action="patient_details.php" method="post">' +
-        '<input type="hidden" name="id" value="'+$(this).attr('data-id')+'" />' +
+    $(document).ready(function(){
+        let code = '<?php echo $code;?>';
+        var form = $('<form action="home.php" method="post">' +
+        '<input type="hidden" name="code" value="'+code+'" />' +
         '</form>');
         $('body').append(form);
         form.submit();
     })
 </script>
+</body>
+</html>

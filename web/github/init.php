@@ -15,7 +15,7 @@ function fetchData()
     if(empty($_SESSION['user'])){
         $client_id = "89268328b0acc55062fe";
         $redirect_url = "http://localhost/dhanya/web/github/login.php";
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_GET['code'])) {
                 $code = $_GET['code'];
                 $post = http_build_query(array(

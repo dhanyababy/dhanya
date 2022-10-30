@@ -15,7 +15,7 @@ require_once('header.php');
                   $link = $itm->link; 
                   $descript = $itm->description;
                   $date = $itm->pubDate;
-                  echo '<hr><li><a href='.$link.'">' .$title. '</a>';
+                  echo '<hr><li><a href='.$link.'" target="blank">' .$title. '</a>';
                   echo "<br>";
                   echo $descript. '</li>';
                   echo "<br>";

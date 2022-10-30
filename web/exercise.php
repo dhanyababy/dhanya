@@ -12,6 +12,7 @@
         $videos[] = $row;
       }
     }
+    
     $graph_data = [];
     $patient_details = [];
     $user_email = $_SESSION['user_email'];

@@ -1,5 +1,8 @@
 <?php require('../database.php'); ?>
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
     $user_id = '';
     $patient_details = [];
     $patient_activities = [];
@@ -44,30 +47,34 @@ session_start();
             <p>Email: <?= $patient_details['email'] ?></p>
             <br>
             <h4>Patient Activity Info:</h4>
-            <p>Select patient from the dropdown button to see activity info</p>
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">select data
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                <?php
-                        
-                if(!empty($patient_activities)){
-                    foreach($patient_activities as $key=>$value){
-                ?>
-                <li><a class="view_activity" data-file="<?= $value['DataURL']?>" data-name="<?= $patient_details['username'] ?>" href="#"><?=$value['DataURL']?></a></li>
-                        
-                <?php
+            <p>Select patient from the dropdown to see activity info</p>
+            <form method="post" action="patient_activity.php" target="iframe" enctype="multipart/form-data">
+                <div class="col-md-8">
+                    <select class="form-control" name="file" id="file">
+                        <option value="" selected> - Choose data file name-
+                    <?php
+                    if(!empty($patient_activities)){
+                        foreach($patient_activities as $key=>$value){
+                    ?>
+                    <option value="<?= $value['DataURL']?>"><?= $value['DataURL']?></option>
+                            
+                    <?php
+                            }
                         }
-                    }
-                ?>
-                
-
-                </ul>
-            </div>
+                    ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input class="btn btn-success" type="submit" name="submit" value="View"></input>
+                </div>
+                <div class="clearfix"></div>
+                <div class="graph">
+                    <iframe name="iframe" frameborder="0" width="320" height="220" allowfullscreen>
+                    <img src="patient_activity.php"/>
+                    </iframe>
+                </div>
+            </form>
             <br>
-            <div id="chart_div" class="panel panel-default plr10 ptb10" style="display:none">
-                <div id="myChart" style="width:100%; max-width:600px; height:500px;"></div>
-            </div>
         </div>
         <?php
             }
@@ -82,45 +89,3 @@ session_start();
     </div>
 </div>
 <?php require_once('footer.php'); ?>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script>
-    $(document).on('click','.view_activity',function(e){
-        e.preventDefault();
-        var form_data = {
-            'file'     : $(this).attr('data-file'),
-            'name'     : $(this).attr('data-name')
-        };
-        $.ajax({
-            url: "patient_activity.php",
-            type: "post",
-            data: form_data ,
-            success: function (response) {
-                let response_obj = jQuery.parseJSON(response);
-                if(response_obj.status){
-                    $('#chart_div').css({display:'block'})
-                    google.charts.load('current',{packages:['corechart']});
-                    google.charts.setOnLoadCallback(drawChart);
-                    function drawChart() {
-                        // Set Data
-                        var chart_data = response_obj.chart_data;
-                        var data = google.visualization.arrayToDataTable(chart_data);
-                        var options = {
-                        title: 'Patient Data',
-                        //   hAxis: {title: 'Square Meters'},
-                        //   vAxis: {title: 'Price in Millions'},
-                        //   legend: 'none'
-                        };
-                        var chart = new google.visualization.LineChart(document.getElementById('myChart'));
-                        chart.draw(data, options);
-                    }
-                }
-                else{
-                    $('#chart_div').css({display:'none'})
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-            }
-        });
-    })
-</script>
