@@ -41,6 +41,19 @@ class ComposerStaticInit9bb715830820394f9bce40c87b119f1a
         array (
             'Firebase\\JWT\\' => 13,
         ),
+        'A' => 
+        array (
+            'Amenadiel\\JpGraph\\Util\\' => 23,
+            'Amenadiel\\JpGraph\\Themes\\' => 25,
+            'Amenadiel\\JpGraph\\Text\\' => 23,
+            'Amenadiel\\JpGraph\\Plot\\' => 23,
+            'Amenadiel\\JpGraph\\Image\\' => 24,
+            'Amenadiel\\JpGraph\\Graph\\Tick\\' => 29,
+            'Amenadiel\\JpGraph\\Graph\\Scale\\' => 30,
+            'Amenadiel\\JpGraph\\Graph\\Axis\\' => 29,
+            'Amenadiel\\JpGraph\\Graph\\' => 24,
+            'Amenadiel\\JpGraph\\' => 18,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -88,6 +101,46 @@ class ComposerStaticInit9bb715830820394f9bce40c87b119f1a
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
+        'Amenadiel\\JpGraph\\Util\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/util',
+        ),
+        'Amenadiel\\JpGraph\\Themes\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/themes',
+        ),
+        'Amenadiel\\JpGraph\\Text\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/text',
+        ),
+        'Amenadiel\\JpGraph\\Plot\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/plot',
+        ),
+        'Amenadiel\\JpGraph\\Image\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/image',
+        ),
+        'Amenadiel\\JpGraph\\Graph\\Tick\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/graph/tick',
+        ),
+        'Amenadiel\\JpGraph\\Graph\\Scale\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/graph/scale',
+        ),
+        'Amenadiel\\JpGraph\\Graph\\Axis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/graph/axis',
+        ),
+        'Amenadiel\\JpGraph\\Graph\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src/graph',
+        ),
+        'Amenadiel\\JpGraph\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amenadiel/jpgraph/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -101,7 +154,6 @@ class ComposerStaticInit9bb715830820394f9bce40c87b119f1a
     );
 
     public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Google\\Auth\\ApplicationDefaultCredentials' => __DIR__ . '/..' . '/google/auth/src/ApplicationDefaultCredentials.php',
         'Google\\Auth\\CacheTrait' => __DIR__ . '/..' . '/google/auth/src/CacheTrait.php',
         'Google\\Auth\\CredentialsLoader' => __DIR__ . '/..' . '/google/auth/src/CredentialsLoader.php',
