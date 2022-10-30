@@ -1,16 +1,15 @@
 <?php
 session_start();
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 0);
-// error_reporting(E_ALL);
+error_reporting(E_ALL);
 
 require_once "init.php";
 require('../database.php');
 
 $patients = [];
-$sql = "SELECT * FROM User where Role_IDrole = '1'";
+$sql = "SELECT * FROM user where Role_IDrole=1";
 $result = $conn->query($sql);
-
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $patients[] = $row;

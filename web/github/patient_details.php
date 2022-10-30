@@ -5,7 +5,7 @@
     $patient_activities = [];
     if(!empty($_POST['id'])){
         $user_id = $_POST['id'];
-        $sql = "SELECT * FROM User left join organization on Organization=organizationID where userID = ".$user_id." limit 1";
+        $sql = "SELECT * FROM user left join organization on Organization=organizationID where userID = ".$user_id." limit 1";
         // print_r($sql);die;
         $result = $conn->query($sql);
 
@@ -44,6 +44,7 @@ session_start();
             <p>Email: <?= $patient_details['email'] ?></p>
             <br>
             <h4>Patient Activity Info:</h4>
+            <p>Select patient from the dropdown button to see activity info</p>
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">select data
                 <span class="caret"></span></button>
@@ -63,6 +64,10 @@ session_start();
 
                 </ul>
             </div>
+            <br>
+            <div id="chart_div" class="panel panel-default plr10 ptb10" style="display:none">
+                <div id="myChart" style="width:100%; max-width:600px; height:500px;"></div>
+            </div>
         </div>
         <?php
             }
@@ -77,14 +82,45 @@ session_start();
     </div>
 </div>
 <?php require_once('footer.php'); ?>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
     $(document).on('click','.view_activity',function(e){
         e.preventDefault();
-        var form = $('<form action="patient_activity_data.php" method="post">' +
-        '<input type="hidden" name="file" value="'+$(this).attr('data-file')+'" />' +
-        '<input type="hidden" name="name" value="'+$(this).attr('data-name')+'" />' +
-        '</form>');
-        $('body').append(form);
-        form.submit();
+        var form_data = {
+            'file'     : $(this).attr('data-file'),
+            'name'     : $(this).attr('data-name')
+        };
+        $.ajax({
+            url: "patient_activity.php",
+            type: "post",
+            data: form_data ,
+            success: function (response) {
+                let response_obj = jQuery.parseJSON(response);
+                if(response_obj.status){
+                    $('#chart_div').css({display:'block'})
+                    google.charts.load('current',{packages:['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+                    function drawChart() {
+                        // Set Data
+                        var chart_data = response_obj.chart_data;
+                        var data = google.visualization.arrayToDataTable(chart_data);
+                        var options = {
+                        title: 'Patient Data',
+                        //   hAxis: {title: 'Square Meters'},
+                        //   vAxis: {title: 'Price in Millions'},
+                        //   legend: 'none'
+                        };
+                        var chart = new google.visualization.LineChart(document.getElementById('myChart'));
+                        chart.draw(data, options);
+                    }
+                }
+                else{
+                    $('#chart_div').css({display:'none'})
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+            }
+        });
     })
 </script>
