@@ -2,8 +2,8 @@
 <?php
     $file_name = '';
     $activity_data = [];
-    if(!empty($_GET['file'])){
-        $file_name = "../".$_GET['file'].".csv";
+    if(!empty($_POST['file'])){
+        $file_name = "../".$_POST['file'].".csv";
 
         $file = fopen($file_name, "r");
         $table_rows = "<table border='1px' cellpadding='6' cellspacing='50'>";
@@ -51,11 +51,24 @@ session_start();
 </style>
 <div class="col-md-9 main_div">
     <div class="sub_div">
+        <?php 
+            if(!empty($_POST['file'])){
+        ?>
         <div class="panel panel-default plr10 ptb10">
             <div id="myChart" style="width:100%; max-width:600px; height:500px;"></div>
-            <!-- <h4><?=ucfirst($_GET['file'])?> for <?= ucfirst($_GET['name']) ?></h4>
+            <!-- <h4><?=ucfirst($_POST['file'])?> for <?= ucfirst($_POST['name']) ?></h4>
             <?= $table_rows ?> -->
-        </div>       
+        </div>
+        <?php
+            }
+            else{
+        ?>
+        <div class="panel panel-default plr10 ptb10">
+                <p>Failed to get patient activity data</p>
+        </div>
+        <?php
+            }
+        ?>
     </div>
 </div>
 

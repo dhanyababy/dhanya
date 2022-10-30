@@ -3,8 +3,8 @@
     $user_id = '';
     $patient_details = [];
     $patient_activities = [];
-    if(!empty($_GET['id'])){
-        $user_id = $_GET['id'];
+    if(!empty($_POST['id'])){
+        $user_id = $_POST['id'];
         $sql = "SELECT * FROM User left join organization on Organization=organizationID where userID = ".$user_id." limit 1";
         // print_r($sql);die;
         $result = $conn->query($sql);
@@ -33,6 +33,9 @@ session_start();
 ?>
 <div class="col-md-9 main_div">
     <div class="sub_div">
+        <?php 
+            if(!empty($patient_details)){
+        ?>
         <div class="panel panel-default plr10 ptb10">
             <h4>Patient Info:</h4>
             <p>User ID: <?= $patient_details['userID'] ?></p>
@@ -50,7 +53,7 @@ session_start();
                 if(!empty($patient_activities)){
                     foreach($patient_activities as $key=>$value){
                 ?>
-                <li><a href="patient_activity_data.php?file=<?= $value['DataURL']?>&name=<?= $patient_details['username'] ?>"><?=$value['DataURL']?></a></li>
+                <li><a class="view_activity" data-file="<?= $value['DataURL']?>" data-name="<?= $patient_details['username'] ?>" href="#"><?=$value['DataURL']?></a></li>
                         
                 <?php
                         }
@@ -61,6 +64,27 @@ session_start();
                 </ul>
             </div>
         </div>
+        <?php
+            }
+            else{
+        ?>
+        <div class="panel panel-default plr10 ptb10">
+            <p>Patient details not found!..</p>
+        </div>
+        <?php
+            }
+        ?>
     </div>
 </div>
 <?php require_once('footer.php'); ?>
+<script>
+    $(document).on('click','.view_activity',function(e){
+        e.preventDefault();
+        var form = $('<form action="patient_activity_data.php" method="post">' +
+        '<input type="hidden" name="file" value="'+$(this).attr('data-file')+'" />' +
+        '<input type="hidden" name="name" value="'+$(this).attr('data-name')+'" />' +
+        '</form>');
+        $('body').append(form);
+        form.submit();
+    })
+</script>
